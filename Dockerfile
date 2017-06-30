@@ -81,5 +81,6 @@ RUN ./make-standalone-toolchain.sh --ndk-dir=../.. \
 
 # WORKDIR /root/kodi-android
 # RUN make -j20 -C tools/depends/target/xbmc
+WORKDIR /root
 
 CMD ["/bin/bash"]
