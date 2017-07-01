@@ -46,14 +46,16 @@ RUN rm "${ANDROID_NDK_ZIP}"
 
 RUN keytool -genkey -keystore ~/.android/debug.keystore -v -alias \
       androiddebugkey -dname "CN=Android Debug,O=Android,C=US" -keypass \
-      android -storepass android -keyalg RSA -keysize 2048 -validity 10000
-
-RUN echo y | android update sdk --all -u -t build-tools-20.0.0
-
-WORKDIR /opt/${ANDROID_NDK_DIR}/build/tools
-RUN ./make-standalone-toolchain.sh --ndk-dir=../.. \
+      android -storepass android -keyalg RSA -keysize 2048 -validity 10000 &&  \
+     echo y | android update sdk --all -u -t build-tools-20.0.0  &&  \
+     cd /opt/${ANDROID_NDK_DIR}/build/tools &&  \
+     ./make-standalone-toolchain.sh --ndk-dir=../.. \
+      --install-dir=/opt/android-toolchain-arm-linux-androideabi-4.9/android-21 --platform=android-21 \
+      --toolchain=arm-linux-androideabi-4.9 && \
+     ./make-standalone-toolchain.sh --ndk-dir=../.. \
       --install-dir=/opt/android-toolchain-x86/android-21 --platform=android-21 \
       --toolchain=x86-4.9 --arch=x86
+
 
 
 
@@ -63,15 +65,17 @@ WORKDIR /root
 CMD ["/bin/bash"]
 
 
-#get the repository somewhere on ur hardisk and use it as volume       
-# RUN git clone https://github.com/kiamesdavies/xbmc.git $HOME/kodi-android
 
+#get the repository somewhere on ur hardisk and use it as volume 
+#cd $HOME
+# RUN git clone https://github.com/kiamesdavies/xbmc.git kodi-android
+#cd kodi-android/tools/depends
 
 
 # RUN ./bootstrap
-# RUN ./configure --with-tarballs=/opt/xbmc-depends/tarballs --host=i686-linux-android \
+# RUN ./configure --with-tarballs=/opt/xbmc-depends/tarballs --host=arm-linux-androideabi  \
 #     --with-sdk-path=/opt/android-sdk-linux --with-ndk=/opt/${ANDROID_NDK_DIR} \
-#     --with-toolchain=/opt/android-toolchain-x86/android-21 --prefix=/opt/android-dev/android/xbmc-depends
+#     --with-toolchain=/opt/android-toolchain-arm-linux-androideabi-4.9/android-21 --prefix=/opt/android-dev/android/xbmc-depends
 
 # These commands tend to fail, but they generate state as they do so. I
 # think this project has some nondeterministic build failures, and that's why
