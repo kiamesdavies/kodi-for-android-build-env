@@ -77,11 +77,18 @@ CMD ["/bin/bash"]
 #     --with-sdk-path=/opt/android-sdk-linux --with-ndk=/opt/${ANDROID_NDK_DIR} \
 #     --with-toolchain=/opt/android-toolchain-arm-linux-androideabi-4.9/android-21 --prefix=/opt/android-dev/android/xbmc-depends
 
+
+#for x86 
+#RUN ./configure --with-tarballs=/opt/xbmc-depends/tarballs --host=i686-linux-android \
+#     --with-sdk-path=/opt/android-sdk-linux --with-ndk=/opt/${ANDROID_NDK_DIR} \
+#     --with-toolchain=/opt/android-toolchain-x86/android-21 --prefix=/opt/android-dev/android/xbmc-depends
+
 # These commands tend to fail, but they generate state as they do so. I
 # think this project has some nondeterministic build failures, and that's why
 # it's necessary to build several times. As such, I don't guarantee that the
 # following commands will successfully build the project. But they worked for
 # me at least once.
+# RUN make clean
 # RUN make -j20 || echo failed
 # RUN make || echo failed
 # RUN make -C target/libcdio-gplv3 distclean
