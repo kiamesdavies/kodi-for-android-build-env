@@ -88,6 +88,9 @@ CMD ["/bin/bash"]
 # it's necessary to build several times. As such, I don't guarantee that the
 # following commands will successfully build the project. But they worked for
 # me at least once.
+# I have discovered that the problem with the non-deterministic nature of  the build is internet, 
+#  I just built sucessfully now,  just with make clean and make -j3 
+
 # RUN make clean
 # RUN make -j20 || echo failed
 # RUN make || echo failed
