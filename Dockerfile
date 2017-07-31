@@ -61,7 +61,7 @@ RUN keytool -genkey -keystore ~/.android/debug.keystore -v -alias \
 
 
 WORKDIR /root
-
+o
 CMD ["/bin/bash"]
 
 
@@ -73,9 +73,10 @@ CMD ["/bin/bash"]
 
 
 # RUN ./bootstrap
-# RUN ./configure --with-tarballs=/opt/xbmc-depends/tarballs --host=arm-linux-androideabi  \
+# RUN ./configure --with-tarballs=/opt/xbmc-depends/arm/tarballs --host=arm-linux-androideabi  \
 #     --with-sdk-path=/opt/android-sdk-linux --with-ndk=/opt/${ANDROID_NDK_DIR} \
-#     --with-toolchain=/opt/android-toolchain-arm-linux-androideabi-4.9/android-21 --prefix=/opt/android-dev/android/xbmc-depends
+#     --with-toolchain=/opt/android-toolchain-arm-linux-androideabi-4.9/android-21 --prefix=/opt/android-dev/android/xbmc-depends --enable-debug=no
+
 
 
 #for x86 
@@ -88,15 +89,35 @@ CMD ["/bin/bash"]
 # it's necessary to build several times. As such, I don't guarantee that the
 # following commands will successfully build the project. But they worked for
 # me at least once.
-# I have discovered that the problem with the non-deterministic nature of  the build is internet, 
-#  I just built sucessfully now,  just with make clean and make -j3 
+
 
 # RUN make clean
-# RUN make -j20 || echo failed
+# RUN make -j3 || echo failed
 # RUN make || echo failed
 # RUN make -C target/libcdio-gplv3 distclean
 # RUN make
-# RUN make -j20 -C target/binary-addons
+# I have discovered that the problem with the non-deterministic nature of  the build is internet, 
+# For clarification if there is any failure ditclean that folder, it doesnt necessary its under target folder, it could be native/swig-native etc, and u can distclean several directories if multiple 
+# directories are reported as failed
+# also if u see EOF, deltet the appropirate tar.gz or bz2 it simply means it lost internet while it was downloading 
+
+
+
+
+# RUN make -j3 -C target/binary-addons
 
 # WORKDIR /root/kodi-android
-# RUN make -j20 -C tools/depends/target/cmakebuildsys
+# RUN make -j3 -C tools/depends/target/cmakebuildsys
+# cd build
+# make
+# make apk
+
+
+#if u want to switch between two toolchains 
+# WORKDIR /root/kodi-android
+# rm -rf build
+# cd tools/depends
+# make distclean 
+# rm -rf autom4te.cache
+# rm config.status
+# rm config.log
