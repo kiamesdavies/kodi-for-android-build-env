@@ -61,7 +61,7 @@ RUN keytool -genkey -keystore ~/.android/debug.keystore -v -alias \
 
 
 WORKDIR /root
-o
+
 CMD ["/bin/bash"]
 
 
